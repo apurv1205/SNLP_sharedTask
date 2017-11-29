@@ -1,0 +1,39 @@
++++Two methods used were :
+
+1. (pslr.py) PLSR with number of components set to 15 : correctly predicted 13 out of 81 test data.
+2. (twin_merge_nn.py) Custom neural network : correctly predicted 6 out of 81 test data, however, the predicted words were closer to actual portmanteau words which was not the case with plsr.
+
+
++++NeuralOutput.csv contains the output with neural network based model
++++Output_pslr.csv contains the output with plsr method 
+
+Both of these have four columns :
+Source1,Source2,Prediction,Target
+
+Both of these require the following input files :
+	1. trainSet : the train dataset, containing list of lists of the form - [portmanteau word, source word1, source word2]
+	2. testSet : the test dataset, containing list of lists of the form - [portmanteau word, source word1, source word2]
+	3. vectors_dct.p : contains a dictionary, where keys are words (portmanteau and source words) and value are the corresponding vectors found using fasttext binary with english wikipedia binary as the model. 
+	
+	--- The file can be downloaded from following link : 
+		https://drive.google.com/file/d/1LCj4TmmJX3739MasS6xtPsDMvzULnPBQ/view?usp=sharing
+
+	
+	4. zorse1.p : Now both the models output a vector given the vectors of source words as the input, so to find the closest portmanteau word to this vector, we do the following :
+
+		a. form all possible portmanteau words given source words where we take prefix from source word 1 and suffix from source word 2. So suppose the source word 1 is "zebra" and source word 2 is "horse", the list of all possible portmanteau words will be :
+			* z + orse = zorse
+			* z + rse  = zrse
+			* z + se   = zse
+			* z + e    = ze
+			* ze + orse= zeorse
+			* ze + rse = zerse ...
+
+		Now we find the vectors for these words too using fasttext binary and then find the cosine similarity with the predicted vector from either of the models, the word which has the highest similarity, is the predicted word.
+
+	So, zorse1.p contains a dictionary where key is the portmanteau word, and value is a dictionary where
+		key is a word out of all possible portmanteau words possible, like when portmanteau word is zebra then its value 
+		will be a dictionary with keys equal to zorse, zrse, zse ... and the value will be corresponding vectors.
+
+	--- The file can be downloaded from following link :
+		https://drive.google.com/file/d/1ejsq3f1xZIut3q62oT0Vu_4P8_lk5GTZ/view?usp=sharing

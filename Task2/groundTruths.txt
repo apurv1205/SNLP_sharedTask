@@ -1,0 +1,12 @@
+petrol
+status
+gift
+film
+review
+interview
+star
+development
+job
+share
+well
+month
